@@ -10,9 +10,9 @@ app.get('/auth', middleWarez.auth)
 
 // Callback service parsing the authorization token
 // and asking for the access token
-app.get('/callback', middleWarez.callback)
+app.get('/auth/callback', middleWarez.callback)
 
-app.get('/success', middleWarez.success)
+app.get('/auth/success', middleWarez.success)
 app.get('/', middleWarez.index)
 
 app.listen(port, () => {
