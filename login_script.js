@@ -2,7 +2,7 @@ if (!process.env.ORIGINS) {
   throw new Error('process.env.ORIGINS must be set!');
 }
 const origins = process.env.ORIGINS.split(',').map(o => o.trim());
-const ORIGIN_REGEX = /^https?:\/\/([\w-]+\.)*[\w-]+\.[a-zA-Z]{2,}(?::\d{1,5})?$/;
+const ORIGIN_REGEX = /^(https?:\/\/)?([\w_-]+\.)+[\w_-]+\.[a-zA-Z]{2,}$/;
 
 for (const origin of origins) {
   if (!ORIGIN_REGEX.test(origin)) {
