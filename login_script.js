@@ -1,12 +1,14 @@
-const REQUIRED_ORIGIN_PATTERN = 
-  /^((\*|([\w_-]{2,}))\.)*(([\w_-]{2,})\.)+(\w{2,})(\,((\*|([\w_-]{2,}))\.)*(([\w_-]{2,})\.)+(\w{2,}))*$/
-
-if (!process.env.ORIGINS.match(REQUIRED_ORIGIN_PATTERN)) {
-  throw new Error('process.env.ORIGINS MUST be comma separated list \
-    of origins that login can succeed on.')
+if (!process.env.ORIGINS) {
+  throw new Error('process.env.ORIGINS must be set!');
 }
-const origins = process.env.ORIGINS.split(',')
+const origins = process.env.ORIGINS.split(',').map(o => o.trim());
+const ORIGIN_REGEX = /^(\*|[\w_-]+\.)*[\w_-]+\.[a-zA-Z]{2,}$/;
 
+for (const origin of origins) {
+  if (!ORIGIN_REGEX.test(origin)) {
+    throw new Error(`Invalid origin: "${origin}". ORIGINS must be a comma-separated list of valid origins.`);
+  }
+}
 
 module.exports = (oauthProvider, message, content) => `
 <script>
