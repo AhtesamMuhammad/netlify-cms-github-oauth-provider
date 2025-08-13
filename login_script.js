@@ -1,16 +1,17 @@
-if (!process.env.ORIGINS) {
-  throw new Error('process.env.ORIGINS must be set!');
-}
-const origins = process.env.ORIGINS.split(',').map(o => o.trim());
-const ORIGIN_REGEX = /^(https?:\/\/)?([\w_-]+\.)+[\w_-]+\.[a-zA-Z]{2,}$/;
+const REQUIRED_ORIGIN_PATTERN = /^([\w.-]+)(,[\w.-]+)*$/;
 
-for (const origin of origins) {
-  if (!ORIGIN_REGEX.test(origin)) {
-    throw new Error(`Invalid origin: "${origin}". ORIGINS must be a comma-separated list of valid origins.`);
-  }
-}
 
-module.exports = (oauthProvider, message, content) => `
+console.log("ORIGINS variable: ", process.env.ORIGINS);
+console.log("Match result: ", process.env.ORIGINS && process.env.ORIGINS.match(REQUIRED_ORIGIN_PATTERN));
+
+if (!process.env.ORIGINS.match(REQUIRED_ORIGIN_PATTERN)) {
+  throw new Error('process.env.ORIGINS MUST be comma separated list \
+    of origins that login can succeed on.')
+}
+const origins = process.env.ORIGINS.split(',')
+
+
+module.exports = (oauthProvider, message, content) => 
 <script>
 (function() {
   function contains(arr, elem) {
@@ -46,4 +47,4 @@ module.exports = (oauthProvider, message, content) => `
   console.log("Sending message: %o", "${oauthProvider}")
   window.opener.postMessage("authorizing:${oauthProvider}", "*")
 })()
-</script>`
+</script>
