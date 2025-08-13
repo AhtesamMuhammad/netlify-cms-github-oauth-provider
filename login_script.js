@@ -1,6 +1,5 @@
 const REQUIRED_ORIGIN_PATTERN = /^([\w.-]+)(,[\w.-]+)*$/;
 
-
 console.log("ORIGINS variable: ", process.env.ORIGINS);
 console.log("Match result: ", process.env.ORIGINS && process.env.ORIGINS.match(REQUIRED_ORIGIN_PATTERN));
 
@@ -10,8 +9,7 @@ if (!process.env.ORIGINS.match(REQUIRED_ORIGIN_PATTERN)) {
 }
 const origins = process.env.ORIGINS.split(',')
 
-
-module.exports = (oauthProvider, message, content) => 
+module.exports = (oauthProvider, message, content) => `
 <script>
 (function() {
   function contains(arr, elem) {
@@ -47,4 +45,4 @@ module.exports = (oauthProvider, message, content) =>
   console.log("Sending message: %o", "${oauthProvider}")
   window.opener.postMessage("authorizing:${oauthProvider}", "*")
 })()
-</script>
+</script>`
